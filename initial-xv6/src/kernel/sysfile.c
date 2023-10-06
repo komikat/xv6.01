@@ -68,6 +68,8 @@ sys_dup(void)
 
 int read = 0;
 
+struct spinlock readlock;
+
 uint64
 sys_read(void)
 {
@@ -75,8 +77,10 @@ sys_read(void)
   int n;
   uint64 p;
 
+  acquire(&readlock);
   read++;
-		  
+  release(&readlock);
+
   argaddr(1, &p);
   argint(2, &n);
   if(argfd(0, 0, &f) < 0)
@@ -90,7 +94,7 @@ int sem = 0; // not being accessed
 uint64
 sys_getreadcount(void)
 {
-	return read;
+  return read;
 }
 
 uint64

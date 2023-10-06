@@ -6,6 +6,7 @@
 
 volatile static int started = 0;
 
+
 // start() jumps here in supervisor mode on all CPUs.
 void
 main()
@@ -15,6 +16,15 @@ main()
     printfinit();
     printf("\n");
     printf("xv6 kernel is booting\n");
+
+    #ifdef FCFS
+    printf("Using fcfs!\n");
+    #endif
+
+    #ifdef MLFQ
+    printf("Using mlfq!\n");
+    #endif
+
     printf("\n");
     kinit();         // physical page allocator
     kvminit();       // create kernel page table
@@ -41,5 +51,5 @@ main()
     plicinithart();   // ask PLIC for device interrupts
   }
 
-  scheduler();        
+ scheduler();
 }
