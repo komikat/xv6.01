@@ -100,15 +100,15 @@
     </tbody>
     </table>
 
--   Graphs
+- Graphs
+
+  ![img](./graphs/9.png "8 ticks")
     
-    ![img](./../../graphs/9.png "8 ticks")
+    ![img](./graphs/9.png "9 ticks")
     
-    ![img](./../../graphs/9.png "9 ticks")
+    ![img](./graphs/10.png "10 ticks")
     
-    ![img](./../../graphs/10.png "10 ticks")
+    ![img](./graphs/15.png "15 ticks")
     
-    ![img](./../../graphs/15.png "15 ticks")
-    
-    The code used to generate these graphs can be found in [graphs python notebook](graphs.ipynb).
+    The code used to generate these graphs can be found in [graphs python notebook](./initial-xv6/src/graphs.ipynb).
 
