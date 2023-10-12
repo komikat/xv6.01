@@ -19,6 +19,24 @@
 
 # Spec 2
 
+## Implementation
+
+- FCFS
+First come first serve.
+    - [x] Add pre-processor directives in the Makefile.
+    - [x] Changed the `scheduler()` function to include the (relatively) simple algorithm -- it just chooses the process with the minimum creation time using a simple iterative loop.
+    - [x] Change `proc.h` to not `yield()` in case there is a trap caused due to the interrupt timer by just putting the yield around an `#IFNDEF FCFS` macro.
+    
+- MLFQ
+Multi level feedback queue.
+    - [x] Added new contents to the process struct in `proc.h`.
+    - [x] Made sure these were initialized properly on `allocproc()`.
+    - [x] Updated the `update_time()` function which basically updates these parameters for every process.
+    - [x] Changed the `scheduler()` function yet again.
+      - a simple iterative loop which searches for the earliest process in the highest priority queue.
+      - added an aging loop which checks if the processes have been waiting for too long.
+    - [x] Changed the `trap.c` code to update process parameters if they have taken too much of their own time slice, reducing priority and increasing their ticks.
+
 
 <a id="org47b9bc6"></a>
 
