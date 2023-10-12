@@ -22,13 +22,16 @@
 
 <a id="org47b9bc6"></a>
 
-## FCFS
+## Comparison
 
--   FCFS performance:
+- FCFS performance
     Average rtime: 14
     wait: 129
+- RR performance
+    Average rtime 14
+    wait 156
 
--   MLFQ experiments
+- MLFQ experiments
     `TOO_LONG`: waiting time after which process priority upgrades.
     
     <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -100,7 +103,7 @@
     </tbody>
     </table>
 
-# Spec 3 Graphs
+# Spec 3 
 
 ![img](./graphs/8.png "8 ticks")
     
@@ -110,12 +113,12 @@
     
 ![img](./graphs/15.png "15 ticks")
     
-    The code used to generate these graphs can be found in [graphs python notebook](./initial-xv6/src/graphs.ipynb).
+The code used to generate these graphs can be found in [graphs python notebook](./initial-xv6/src/graphs.ipynb).
 
 
 
 # Spec 4
-- TCP diff
+1. TCP diff
   - Fixed timeout: TCP uses adaptive timers based on network conditions.
   - I send acks with every request I send back from the recipient to the sender.
   - I'm also not encrypting or hashing my chunks at all, they are being ordered and sent right away. 
