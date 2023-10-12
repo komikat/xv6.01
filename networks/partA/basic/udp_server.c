@@ -1,14 +1,13 @@
-#include <errno.h>
 #include <netdb.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
-#include <sys/types.h>
 #include <unistd.h>
 
 #define PORT "8080"
 #define BACKLOG 10
+#define BUFLEN 1000
 
 // Inspired (and learnt) a lot from:
 // https://beej.us/guide/bgnet/html//index.html
@@ -19,7 +18,7 @@ int main() {
 
   memset(&hints, 0, sizeof hints); // empty struct
   hints.ai_family = AF_UNSPEC;     // ipv4/6
-  hints.ai_socktype = SOCK_STREAM; // tcp
+  hints.ai_socktype = SOCK_DGRAM; // tcp
   hints.ai_flags = AI_PASSIVE;     // assigns the address of local host
                                    // to the socket
 
@@ -31,12 +30,12 @@ int main() {
   // result -> linked list of addrinfos for localhost:PORT
   // loop through the entire linked list
   for (p = result; p != NULL; p = p->ai_next) {
-    if ((sockfd = socket(result->ai_family, result->ai_socktype,
-                         result->ai_protocol)) == -1) {
+    if ((sockfd = socket(p->ai_family, p->ai_socktype,
+                         p->ai_protocol)) == -1) {
       continue;
     }
 
-    if (bind(sockfd, result->ai_addr, result->ai_addrlen) == -1) {
+    if (bind(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
       close(sockfd);
       continue;
     }
@@ -49,39 +48,29 @@ int main() {
     exit(1);
   }
 
-
-
-  // listen for incoming connections
-  if (listen(sockfd, BACKLOG) == -1) {
-    fprintf(stderr, "Error listening: %d\n", errno);
-    exit(1);
-  }
-
   printf("Server up!\n");
   // keep accepting requests
   for (;;) {
     struct sockaddr_storage client_addr;
-    socklen_t addr_size = sizeof client_addr;
+    socklen_t addr_len = sizeof client_addr;
     int new_fd;
-    if ((new_fd = accept(sockfd, (struct sockaddr *)&client_addr,
-                         &addr_size)) == -1) {
-      fprintf(stderr, "Issues accepting reqs: %d\n", errno);
-      exit(1);
-    };
 
-    char buf[100] = {0};
-    if (recv(new_fd, buf, 100, 0) == -1) {
-      fprintf(stderr, "Issues recv reqs: %d\n", errno);
+
+    char buf[BUFLEN] = {0};
+    if (recvfrom(sockfd, buf, BUFLEN - 1, 0, (struct sockaddr *)&client_addr,
+                 &addr_len) == -1) {
+      fprintf(stderr, "Issues getting reqs");
       exit(1);
-    };
+    }
 
     printf("%s\n", buf);
 
     char *msg = "Greetings from the server!";
     int len = strlen(msg);
 
-    if (send(new_fd, msg, len, 0) == -1) {
-      fprintf(stderr, "Issues sending reqs: %d\n", errno);
+    if ((sendto(sockfd, msg, len, 0, (struct sockaddr *)&client_addr,
+                addr_len)) == -1) {
+      perror("talker: sendto");
       exit(1);
     }
   }
