@@ -25,6 +25,10 @@ main()
     printf("Using mlfq!\n");
     #endif
 
+    #ifdef DEFAULT
+    printf("Using rr!\n");
+    #endif
+
     printf("\n");
     kinit();         // physical page allocator
     kvminit();       // create kernel page table

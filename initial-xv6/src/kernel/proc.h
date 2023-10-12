@@ -118,7 +118,13 @@ struct proc
   char name[16];               // Process name (debugging)
   uint rtime;                  // How long the process ran for
   uint ctime;                  // When was the process created
-  uint etime;                  // When did the process exited
+  uint etime;                  // When did the process exit
+
+#ifdef MLFQ
+  uint priority;               // the priority queue the process belongs to
+  uint entry;                  // entry time in the queue
+  uint wait;                  // wait time in the queue
+#endif
 };
 
 extern struct proc proc[NPROC];

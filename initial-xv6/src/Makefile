@@ -52,7 +52,7 @@ endif
 QEMU = qemu-system-riscv64
 
 ifndef SCHEDULER
-SCHEDULER := DEFAULT
+SCHEDULER = DEFAULT
 endif
 
 CC = $(TOOLPREFIX)gcc

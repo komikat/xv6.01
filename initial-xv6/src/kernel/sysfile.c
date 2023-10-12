@@ -88,9 +88,6 @@ sys_read(void)
   return fileread(f, p, n);
 }
 
-int sem = 0; // not being accessed
-
-
 uint64
 sys_getreadcount(void)
 {

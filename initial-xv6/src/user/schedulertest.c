@@ -28,7 +28,7 @@ int main()
         {
         } // CPU bound process
       }
-      printf("Process %d finished\n", n);
+      // printf("Process %d finished\n", n);
       exit(0);
     }
   }
@@ -40,6 +40,6 @@ int main()
       twtime += wtime;
     }
   }
-  printf("Average rtime %d,  wtime %d\n", trtime / NFORK, twtime / NFORK);
+  printf("Average rtime %d,  wait %d\n", trtime / NFORK, twtime / NFORK);
   exit(0);
 }

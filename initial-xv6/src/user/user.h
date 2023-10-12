@@ -22,7 +22,7 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
-int waitx(int*, int* /*wtime*/, int* /*rtime*/);
+int waitx(int*, int* /*wait*/, int* /*rtime*/);
 int getreadcount(void);
 
 // ulib.c

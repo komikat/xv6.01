@@ -6,10 +6,17 @@
 #include "proc.h"
 #include "defs.h"
 
+#ifdef __JETBRAINS_IDE__
+#define MLFQ 0
+#define DEFAULT 0
+#endif
+
 struct spinlock tickslock;
 uint ticks;
 
 extern char trampoline[], uservec[], userret[];
+
+int qticks[4] = {1, 3, 9, 15};
 
 // in kernelvec.S, calls kerneltrap().
 void kernelvec();
@@ -79,9 +86,31 @@ void usertrap(void)
     exit(-1);
 
   // give up the CPU if this is a timer interrupt.
-  #ifndef FCFS
+  #ifdef DEFAULT
   if (which_dev == 2)
     yield();
+  #endif
+
+  #ifdef MLFQ
+  if (which_dev == 2)
+  {
+    struct proc* curr = myproc();
+    // if process has used more than or equal to the
+    // ticks it was alloted
+    if ((ticks - curr->entry) >= qticks[curr->priority]) {
+      if (curr->priority < 3) {
+        // insert at the end of the lower queue
+        curr->priority++;
+      }
+      curr->entry = ticks;
+
+      yield();
+    }
+    else {
+      // voluntarily relinquished itself
+
+    }
+  }
   #endif
 
   usertrapret();
@@ -93,6 +122,7 @@ void usertrap(void)
 void usertrapret(void)
 {
   struct proc *p = myproc();
+  p->etime = ticks; // join back the same queue at the end
 
   // we're about to switch the destination of traps from
   // kerneltrap() to usertrap(), so turn off interrupts until
@@ -154,10 +184,23 @@ void kerneltrap()
   }
 
   // give up the CPU if this is a timer interrupt.
-  #ifndef FCFS
+#ifdef DEFAULT
   if (which_dev == 2 && myproc() != 0 && myproc()->state == RUNNING)
     yield();
-  #endif
+#endif
+#ifdef MLFQ
+  if (which_dev == 2 && myproc() != 0 && myproc()->state == RUNNING)
+  {
+    struct proc* curr = myproc();
+    if ((ticks - curr->entry) >= qticks[curr->priority]) {
+      if (curr->priority < 3) {
+        curr->priority++;
+      }
+      curr->entry = ticks;
+      yield();
+    }
+  }
+#endif
 
   // the yield() may have caused some traps to occur,
   // so restore trap registers for use by kernelvec.S's sepc instruction.
@@ -180,7 +223,7 @@ void clockintr()
   //   }
   //   // if (p->state == SLEEPING)
   //   // {
-  //   //   p->wtime++;
+  //   //   p->wait++;
   //   // }
   //   release(&p->lock);
   // }
