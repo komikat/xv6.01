@@ -112,3 +112,9 @@
     
     The code used to generate these graphs can be found in [graphs python notebook](./initial-xv6/src/graphs.ipynb).
 
+
+
+# Spec 4
+1. Mine is way more rudimentary.
+I send acks with every request I send back from the recipient to the sender. I'm also not encrypting or hashing my chunks at all, they are being ordered and sent right away. I'm also waiting for an arbitrary amount of time before I check my ports again to prevent my server from getting ddosses by itself.
+2. I've already done that by implementing some kind of sleep timer which waits before sending the request again. 
