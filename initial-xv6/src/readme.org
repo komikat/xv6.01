@@ -1,0 +1,42 @@
+#+TITLE: Mini Project - 2 Report
+#+SUBTITLE: Operating System and Networks
+
+* Spec 1
+
+- ~getreadcount()~ passes on both tests.
+- works as a syscall using the shell.
+
+* Spec 2
+** FCFS
+- FCFS performance:
+  Average rtime: 14
+  wait: 129
+
+- MLFQ experiments
+  ~TOO_LONG~: waiting time after which process priority upgrades.
+  |----------+---------------+------|
+  | TOO_LONG | average rtime | wait |
+  |----------+---------------+------|
+  |       30 |            26 |  170 |
+  |       10 |            14 |  135 |
+  |       13 |            14 |  135 |
+  |       20 |            14 |  134 |
+  |        5 |            14 |  142 |
+  |        8 |            15 |  144 |
+  |       30 |            15 |  137 |
+  |----------+---------------+------|
+
+- Graphs
+  #+CAPTION: 8 ticks
+  [[./../../graphs/9.png]]
+
+    #+CAPTION: 9 ticks
+  [[./../../graphs/9.png]]
+
+      #+CAPTION: 10 ticks
+  [[./../../graphs/10.png]]
+
+        #+CAPTION: 15 ticks
+  [[./../../graphs/15.png]]
+
+ The code used to generate these graphs can be found in [[file:graphs.ipynb][graphs python notebook]].
