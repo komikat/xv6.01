@@ -100,21 +100,28 @@
     </tbody>
     </table>
 
-- Graphs
+# Spec 3 Graphs
 
-  ![img](./graphs/9.png "8 ticks")
+![img](./graphs/8.png "8 ticks")
     
-    ![img](./graphs/9.png "9 ticks")
+![img](./graphs/9.png "9 ticks")
     
-    ![img](./graphs/10.png "10 ticks")
+![img](./graphs/10.png "10 ticks")
     
-    ![img](./graphs/15.png "15 ticks")
+![img](./graphs/15.png "15 ticks")
     
     The code used to generate these graphs can be found in [graphs python notebook](./initial-xv6/src/graphs.ipynb).
 
 
 
 # Spec 4
-1. Mine is way more rudimentary.
-I send acks with every request I send back from the recipient to the sender. I'm also not encrypting or hashing my chunks at all, they are being ordered and sent right away. I'm also waiting for an arbitrary amount of time before I check my ports again to prevent my server from getting ddosses by itself.
-2. I've already done that by implementing some kind of sleep timer which waits before sending the request again. 
+- TCP diff
+  - Fixed timeout: TCP uses adaptive timers based on network conditions.
+  - I send acks with every request I send back from the recipient to the sender.
+  - I'm also not encrypting or hashing my chunks at all, they are being ordered and sent right away. 
+  - I'm also waiting for an arbitrary amount of time before I check my ports again to prevent my server from getting ddosses by itself.
+2. I've already done that by implementing some kind of sleep timer which waits before sending the request again. Extensions can be: 
+   1. a sliding window to manage flow of data
+   2. using congestion control algorithms
+   3. a dynamic timer as mentioned in the previous answer.
+   4. using exponential backoff (increase timer delay) if failures stack up.
