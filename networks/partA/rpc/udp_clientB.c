@@ -5,7 +5,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#define PORT "8080"
+#define PORT "2051"
 #define BACKLOG 10
 #define BUFFER 100
 

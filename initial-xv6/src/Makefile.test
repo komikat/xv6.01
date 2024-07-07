@@ -1,7 +1,6 @@
 K=kernel
 U=user
 
-
 OBJS = \
   $K/entry.o \
   $K/start.o \
@@ -139,11 +138,9 @@ UPROGS=\
 	$U/_wc\
 	$U/_zombie\
 	$U/_schedulertest\
+	$U/_getreadcount\
 	$U/_test_1\
 	$U/_test_2\
-	$U/_getreadcount\
-
-
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

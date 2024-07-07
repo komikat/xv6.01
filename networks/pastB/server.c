@@ -26,7 +26,6 @@ int main() {
   // will block
 
   for (;;) {
-
     printf("%s", "Waiting for client to select mode.\n");
     get(sockfd, mode);
 
